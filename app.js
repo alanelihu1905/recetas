@@ -503,6 +503,7 @@ window.addEventListener("load", () => {
   // 6. Sincronizar layouts y vista previa
   updateFormModeUI();
   changePrintLayout();
+  applyResponsiveDefaultZoom();
   syncPreview();
 });
 
@@ -827,6 +828,21 @@ function adjustZoomSlider(diff) {
   val = Math.max(0.4, Math.min(1.5, val));
   slider.value = val;
   updateCanvasZoom(val);
+}
+
+function applyResponsiveDefaultZoom() {
+  const slider = document.getElementById("zoom-slider-ctrl");
+  if (!slider) return;
+
+  let target = 0.8;
+  if (window.innerWidth <= 640) {
+    target = 0.45;
+  } else if (window.innerWidth <= 900) {
+    target = 0.6;
+  }
+
+  slider.value = String(target);
+  updateCanvasZoom(target);
 }
 
 // PERSISTENCIA LOCAL DE HISTORIAL (LOCALSTORAGE)
@@ -1385,7 +1401,7 @@ function imprimirDesdeObjeto(recetaObj) {
       </div>
     `;
   } else if (layout === "full") {
-    printStyle.innerHTML = "@page { size: 11in 8.5in; margin: 0; }";
+    printStyle.innerHTML = "@page { size: letter landscape; margin: 0; }";
     document.body.className = "print-full";
     printCanvas.innerHTML = `
       <div class="sheet full-letter">
@@ -1394,7 +1410,7 @@ function imprimirDesdeObjeto(recetaObj) {
     `;
     printCanvas.querySelector(".recipe").classList.add("layout-full");
   } else if (layout === "two") {
-    printStyle.innerHTML = "@page { size: 8.5in 11in; margin: 0; }";
+    printStyle.innerHTML = "@page { size: letter portrait; margin: 0; }";
     document.body.className = "print-two";
     
     printCanvas.innerHTML = `

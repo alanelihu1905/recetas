@@ -24,6 +24,11 @@
   
   /* Zoom de Previsualización */
   --zoom-scale: 0.8;
+
+  /* Tipografia estable para impresion */
+  --print-body-font: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --print-display-font: "Trebuchet MS", "Arial Narrow", "Segoe UI", Arial, sans-serif;
+  --print-serif-font: Georgia, "Times New Roman", serif;
 }
 
 /* REGLAS GENERALES */
@@ -687,6 +692,7 @@ textarea {
   transition: transform 0.15s ease-out;
   display: flex;
   justify-content: center;
+  min-width: max-content;
 }
 
 /* FLOATING ZOOM PILL */
@@ -845,7 +851,9 @@ textarea {
   display: flex;
   flex-direction: column;
   z-index: 1;
-  font-family: 'Avenir Next', 'Segoe UI', Helvetica, Arial, sans-serif !important;
+  font-family: var(--print-body-font) !important;
+  text-rendering: geometricPrecision;
+  font-kerning: normal;
 }
 
 .recipe * {
@@ -899,7 +907,7 @@ textarea {
 .body-title,
 .contact-label,
 .credentials-caption {
-  font-family: 'Montserrat', 'Avenir Next', Avenir, -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-family: var(--print-display-font) !important;
 }
 
 .doctor-name {
@@ -1061,7 +1069,7 @@ textarea {
 }
 
 .rx-symbol {
-  font-family: 'Baskerville', 'Times New Roman', serif !important;
+  font-family: var(--print-serif-font) !important;
   font-size: 54px;
   font-weight: 600;
   font-style: italic;
@@ -1161,7 +1169,7 @@ textarea {
   font-size: 10.8px;
   color: #708096;
   font-weight: 600;
-  font-family: 'Playfair Display', Georgia, serif !important;
+  font-family: var(--print-serif-font) !important;
   font-style: italic;
 }
 
@@ -1640,7 +1648,7 @@ textarea {
 .detail-med-meta {
   color: #475569;
   font-size: 12px;
-  font-family: 'Playfair Display', Georgia, serif !important;
+  font-family: var(--print-serif-font) !important;
   font-style: italic;
 }
 
@@ -1675,12 +1683,16 @@ textarea {
 
   .preview-viewport {
     min-height: 60vh;
-    padding: 20px;
+    padding: 16px 12px 24px;
   }
 
   .zoom-pill {
     position: static;
     margin-bottom: 14px;
+  }
+
+  .preview-scaler {
+    transform-origin: top left;
   }
 }
 
@@ -1699,6 +1711,11 @@ textarea {
 
   .tab-content {
     padding: 18px;
+  }
+
+  .header-doctor-info {
+    border-left: none;
+    padding-left: 0;
   }
 
   .form-row,
@@ -1724,6 +1741,17 @@ textarea {
   .modal-container {
     width: calc(100% - 24px);
     padding: 20px;
+  }
+
+  .toast-container {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .toast-message {
+    min-width: 0;
+    max-width: none;
   }
 }
 
@@ -1792,6 +1820,15 @@ textarea {
 }
 
 @media print {
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -1820,11 +1857,29 @@ textarea {
     height: auto !important;
   }
 
+  body.print-half .print-sheet-area {
+    width: 8.5in !important;
+  }
+
+  body.print-full .print-sheet-area {
+    width: 11in !important;
+  }
+
+  body.print-two .print-sheet-area {
+    width: 8.5in !important;
+  }
+
   .sheet,
   .two-up-wrapper {
     box-shadow: none !important;
     overflow: visible !important;
     background-color: white !important;
+    margin: 0 !important;
+  }
+
+  .sheet {
+    zoom: 1 !important;
+    transform: none !important;
   }
 
   .page-letter {
