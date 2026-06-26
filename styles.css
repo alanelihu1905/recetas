@@ -1025,7 +1025,7 @@ textarea {
   flex: 1;
   border-bottom: 1px solid #b7c2d1;
   padding-bottom: 4px;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
   color: #24324d;
   min-height: 17px;
@@ -1116,18 +1116,18 @@ textarea {
 }
 
 .notes-print-text {
-  font-size: 12px;
+  font-size: 12.8px;
   font-weight: 500;
   white-space: pre-wrap;
   color: #24324d;
-  line-height: 1.62;
+  line-height: 1.66;
 }
 
 .rx-request-text {
-  font-size: 12.5px;
+  font-size: 13.2px;
   font-weight: 500;
   color: #24324d;
-  line-height: 1.72;
+  line-height: 1.76;
   white-space: pre-wrap;
   padding-top: 2px;
 }
@@ -1154,19 +1154,19 @@ textarea {
 
 .med-print-idx {
   font-weight: 600;
-  font-size: 12px;
+  font-size: 12.5px;
   color: #6a788d;
   min-width: 16px;
 }
 
 .med-print-name {
   font-weight: 700;
-  font-size: 13px;
+  font-size: 13.8px;
   color: #121d3d;
 }
 
 .med-print-details {
-  font-size: 10.8px;
+  font-size: 11.4px;
   color: #708096;
   font-weight: 600;
   font-family: var(--print-serif-font) !important;
@@ -1174,7 +1174,7 @@ textarea {
 }
 
 .med-print-instructions {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 500;
   color: #708096;
   padding-left: 24px;
@@ -1197,10 +1197,41 @@ textarea {
 }
 
 .observations-print-text {
-  font-size: 11px;
+  font-size: 11.6px;
   font-weight: 500;
   color: #47566a;
-  line-height: 1.6;
+  line-height: 1.62;
+}
+
+.signature-strip {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 0 0 0.12in;
+  margin-top: -0.02in;
+  margin-bottom: 0.08in;
+  position: relative;
+  z-index: 2;
+}
+
+.signature-block {
+  width: 2.2in;
+  text-align: center;
+}
+
+.signature-line {
+  width: 100%;
+  border-top: 1px solid #94a3b8;
+  margin-bottom: 5px;
+}
+
+.signature-label {
+  font-family: var(--print-display-font) !important;
+  font-size: 8px;
+  font-weight: 700;
+  color: #7c8798;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .extra-date-line {
@@ -1342,7 +1373,7 @@ textarea {
 
 .recipe.content-dense .notes-print-text,
 .recipe.content-dense .rx-request-text {
-  font-size: 11.2px;
+  font-size: 11.6px;
   line-height: 1.5;
 }
 
@@ -1351,19 +1382,19 @@ textarea {
 }
 
 .recipe.content-dense .med-print-name {
-  font-size: 12px;
+  font-size: 12.5px;
 }
 
 .recipe.content-dense .med-print-details,
 .recipe.content-dense .med-print-instructions,
 .recipe.content-dense .observations-print-text {
-  font-size: 10px;
+  font-size: 10.3px;
   line-height: 1.45;
 }
 
 .recipe.content-compact .notes-print-text,
 .recipe.content-compact .rx-request-text {
-  font-size: 10.4px;
+  font-size: 10.8px;
   line-height: 1.38;
 }
 
@@ -1372,13 +1403,13 @@ textarea {
 }
 
 .recipe.content-compact .med-print-name {
-  font-size: 11.2px;
+  font-size: 11.6px;
 }
 
 .recipe.content-compact .med-print-details,
 .recipe.content-compact .med-print-instructions,
 .recipe.content-compact .observations-print-text {
-  font-size: 9.4px;
+  font-size: 9.7px;
   line-height: 1.34;
 }
 
@@ -1418,7 +1449,7 @@ textarea {
 
 .sheet.full-letter .line-field strong { font-size: 13px; }
 .sheet.full-letter .line-field .line-value {
-  font-size: 15px;
+  font-size: 16px;
   min-height: 22px;
   border-bottom-width: 1.5px;
   padding-bottom: 5px;
@@ -1449,20 +1480,23 @@ textarea {
 .sheet.full-letter .notes-print-text { font-size: 14px; line-height: 1.72; }
 
 .sheet.full-letter .rx-request-text {
-  font-size: 15px;
+  font-size: 15.8px;
   line-height: 1.8;
 }
 
 .sheet.full-letter .med-print-list { gap: 16px; padding-top: 8px; }
 .sheet.full-letter .med-print-idx { font-size: 15px; min-width: 22px; }
-.sheet.full-letter .med-print-name { font-size: 16px; }
-.sheet.full-letter .med-print-details { font-size: 14px; }
-.sheet.full-letter .med-print-instructions { font-size: 13px; padding-left: 30px; }
+.sheet.full-letter .med-print-name { font-size: 17px; }
+.sheet.full-letter .med-print-details { font-size: 14.5px; }
+.sheet.full-letter .med-print-instructions { font-size: 13.5px; padding-left: 30px; }
 
 .sheet.full-letter .observations-print-section { margin-top: 18px; padding-top: 12px; }
 .sheet.full-letter .observations-print-title { font-size: 10px; margin-bottom: 5px; }
-.sheet.full-letter .observations-print-text { font-size: 13px; }
+.sheet.full-letter .observations-print-text { font-size: 13.6px; }
 .sheet.full-letter .extra-date-line { font-size: 12px; padding-top: 16px; }
+.sheet.full-letter .signature-strip { padding-bottom: 0.16in; margin-bottom: 0.12in; }
+.sheet.full-letter .signature-block { width: 2.7in; }
+.sheet.full-letter .signature-label { font-size: 10px; }
 
 .sheet.full-letter .watermark-container { width: 3.15in; height: 3.15in; right: -0.35in; bottom: 1.45in; }
 

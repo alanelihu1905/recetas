@@ -707,6 +707,13 @@ function buildPrescriptionHTML(idSuffix, customTemplate = null) {
         </div>
       </div>
 
+      <div class="signature-strip">
+        <div class="signature-block">
+          <div class="signature-line"></div>
+          <div class="signature-label">Firma</div>
+        </div>
+      </div>
+
       <div class="footer-dark-bar">
         <div class="dark-bar">
           <div class="dark-bar-item contact-block">
