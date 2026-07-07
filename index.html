@@ -21,7 +21,7 @@
       <h1>Recetario Médico</h1>
       <span class="header-doctor-info" id="head-doc-title">Dr. Salvador Zamorano Solis</span>
     </div>
-    <div style="font-size: 12px; font-weight: 600; opacity: 0.8;" id="date-label"></div>
+    <div class="header-date-label" id="date-label"></div>
   </header>
 
   <!-- CUERPO DE LA APLICACIÓN -->
@@ -48,33 +48,13 @@
 
       <!-- PESTAÑA 1: FORMULARIO -->
       <div class="tab-content active" id="tab-form">
-        <form id="recipe-form" onsubmit="event.preventDefault(); guardarRecetaForm();">
-          
-          <!-- Datos del Paciente -->
-          <div class="form-group">
-            <label for="form-paciente">Nombre del Paciente</label>
-            <input type="text" id="form-paciente" placeholder="Ej. Juan Pérez" oninput="syncPreview()" required>
-          </div>
+        <form id="recipe-form" class="stack-form" onsubmit="event.preventDefault(); guardarRecetaForm();">
+          <section class="control-panel control-panel-accent">
+            <div class="panel-head">
+              <span class="panel-kicker">Documento</span>
+              <h2 class="panel-title">Modelo impreso</h2>
+            </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="form-edad">Edad</label>
-              <input type="text" id="form-edad" placeholder="Ej. 45 años" oninput="syncPreview()">
-            </div>
-            <div class="form-group">
-              <label for="form-sexo">Sexo</label>
-              <select id="form-sexo" onchange="syncPreview()">
-                <option value="M">Masculino</option>
-                <option value="F">Femenino</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="form-fecha">Fecha de Registro</label>
-              <input type="date" id="form-fecha" oninput="syncPreview()">
-            </div>
             <div class="form-group">
               <label for="form-template">Modelo Impreso</label>
               <select id="form-template" onchange="syncPreview()">
@@ -82,40 +62,106 @@
                 <option value="receta">Solicitud de Rx / Radiografías</option>
               </select>
             </div>
-          </div>
+          </section>
 
-          <div class="template-mode-card" id="template-mode-card">
-            <div class="template-mode-badge" id="template-mode-badge">Receta Médica</div>
-            <p class="template-mode-copy" id="template-mode-copy">
-              Captura medicamentos, indicaciones y observaciones de la receta.
-            </p>
-          </div>
+          <section class="control-panel">
+            <div class="panel-head">
+              <span class="panel-kicker">Paciente</span>
+              <h2 class="panel-title">Datos de consulta</h2>
+            </div>
 
-          <div class="form-group note-mode-panel" id="note-mode-panel">
-            <label for="form-note-mode">Contenido principal</label>
-            <select id="form-note-mode" onchange="syncPreview()">
-              <option value="indicaciones">Indicaciones médicas</option>
-              <option value="diagnostico">Diagnóstico</option>
-            </select>
-          </div>
+            <div class="form-group">
+              <label for="form-paciente">Nombre del Paciente</label>
+              <input type="text" id="form-paciente" placeholder="Ej. Juan Pérez" oninput="syncPreview()" required>
+            </div>
 
-          <div class="form-group">
-            <label for="form-print-layout">Formato de Papel</label>
-            <select id="form-print-layout" onchange="changePrintLayout()">
-              <option value="two" selected>2 Recetas en hoja Carta (Ahorro)</option>
-              <option value="half">Media Carta Horizontal (5.5" x 8.5")</option>
-              <option value="full">Carta Completa Horizontal (8.5" x 11")</option>
-            </select>
-          </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="form-edad">Edad</label>
+                <input type="text" id="form-edad" placeholder="Ej. 45 años" oninput="syncPreview()">
+              </div>
+              <div class="form-group">
+                <label for="form-sexo">Sexo</label>
+                <select id="form-sexo" onchange="syncPreview()">
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                </select>
+              </div>
+            </div>
 
-          <!-- Notas / Motivo -->
-          <div class="form-group">
-            <label for="form-diagnostico" id="form-diagnostico-label">Indicaciones clínicas</label>
-            <textarea id="form-diagnostico" placeholder="Ej. Dolor lumbar, reposo relativo y control en 7 días..." oninput="syncPreview()"></textarea>
-          </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="form-fecha">Fecha de Registro</label>
+                <input type="date" id="form-fecha" oninput="syncPreview()">
+              </div>
+              <div class="form-group form-group-spacer"></div>
+            </div>
+          </section>
 
-          <!-- Medicamentos Dinámicos (Modelo B) -->
-          <div class="meds-panel" id="meds-panel">
+          <section class="control-panel control-panel-accent">
+            <div class="panel-head">
+              <span class="panel-kicker">Formato</span>
+              <h2 class="panel-title">Configuración de impresión</h2>
+            </div>
+
+            <div class="template-mode-card" id="template-mode-card">
+              <div class="template-mode-badge" id="template-mode-badge">Receta Médica</div>
+              <p class="template-mode-copy" id="template-mode-copy">
+                Captura medicamentos, indicaciones y observaciones de la receta.
+              </p>
+            </div>
+
+            <div class="form-group note-mode-panel" id="note-mode-panel">
+              <label for="form-note-mode">Contenido principal</label>
+              <select id="form-note-mode" onchange="syncPreview()">
+                <option value="indicaciones">Indicaciones médicas</option>
+                <option value="diagnostico">Diagnóstico</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="form-print-layout">Formato de Papel</label>
+                <select id="form-print-layout" onchange="changePrintLayout()">
+                  <option value="half" selected>Media Carta con mitad inferior en blanco</option>
+                  <option value="two">2 Recetas en hoja Carta (Ahorro)</option>
+                  <option value="full">Carta Completa Horizontal (8.5" x 11")</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="form-print-mode">Modo de Impresión</label>
+                <select id="form-print-mode" onchange="syncPreview()">
+                  <option value="solo" selected>Solo receta limpia</option>
+                  <option value="layout">Usar formato seleccionado</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section class="control-panel">
+            <div class="panel-head">
+              <span class="panel-kicker">Contenido</span>
+              <h2 class="panel-title">Texto clínico</h2>
+            </div>
+
+            <div class="form-group">
+              <label for="form-diagnostico" id="form-diagnostico-label">Indicaciones clínicas</label>
+              <textarea id="form-diagnostico" placeholder="Ej. Dolor lumbar, reposo relativo y control en 7 días..." oninput="syncPreview()"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="form-observaciones" id="form-observaciones-label">Observaciones Adicionales</label>
+              <textarea id="form-observaciones" placeholder="Indicaciones de reposo, fisioterapia, signos de alarma..." oninput="syncPreview()"></textarea>
+            </div>
+          </section>
+
+          <section class="control-panel meds-panel" id="meds-panel">
+            <div class="panel-head">
+              <span class="panel-kicker">Tratamiento</span>
+              <h2 class="panel-title">Medicamentos</h2>
+            </div>
+
             <div class="meds-section-header">
               <label id="form-meds-label">Medicamentos / Tratamiento</label>
               <button type="button" class="btn btn-secondary btn-small" id="btn-add-med-row" onclick="addMedRow()">+ Agregar Renglón</button>
@@ -124,32 +170,29 @@
             <div id="meds-rows-list">
               <!-- Renglones agregados dinámicamente -->
             </div>
-          </div>
+          </section>
 
-          <!-- Observaciones Adicionales -->
-          <div class="form-group">
-            <label for="form-observaciones" id="form-observaciones-label">Observaciones Adicionales</label>
-            <textarea id="form-observaciones" placeholder="Indicaciones de reposo, fisioterapia, signos de alarma..." oninput="syncPreview()"></textarea>
-          </div>
+          <section class="control-panel control-panel-actions">
+            <div class="panel-head">
+              <span class="panel-kicker">Acciones</span>
+              <h2 class="panel-title">Guardar e imprimir</h2>
+            </div>
 
-          <!-- Botones de Acción -->
-          <div class="btn-group">
-            <button type="button" class="btn btn-secondary" onclick="limpiarFormulario()">Limpiar</button>
-            <button type="submit" class="btn btn-primary" id="btn-submit-form">
-              <!-- Icono de Guardar -->
-              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM7 3v5h8M17 21v-8H7v8"/></svg>
-              Guardar Receta
-            </button>
-          </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-secondary" onclick="limpiarFormulario()">Limpiar</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-form">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM7 3v5h8M17 21v-8H7v8"/></svg>
+                Guardar Receta
+              </button>
+            </div>
 
-          <div style="margin-top: 15px;">
-            <button type="button" class="btn btn-success btn-block" id="btn-print-current" onclick="imprimirActual()">
-              <!-- Icono de Impresión -->
-              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M17 17h2a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2m2 4h10a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2zm8-12V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4"/></svg>
-              Imprimir Receta Actual
-            </button>
-          </div>
-
+            <div class="print-action-wrap">
+              <button type="button" class="btn btn-success btn-block" id="btn-print-current" onclick="imprimirActual()">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M17 17h2a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2m2 4h10a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2zm8-12V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4"/></svg>
+                Imprimir Receta Actual
+              </button>
+            </div>
+          </section>
         </form>
       </div>
 
@@ -188,67 +231,79 @@
 
       <!-- PESTAÑA 3: DOCTOR -->
       <div class="tab-content" id="tab-doctor">
-        <form onsubmit="event.preventDefault(); saveConfigAndSync();">
-          
-          <div class="config-group-box">
-            <div class="config-group-title">Cargar Doctor Predeterminado</div>
-            <div class="btn-group" style="margin-top:0;">
-              <button type="button" class="btn btn-secondary btn-small btn-block" onclick="loadDefaultDoctorData('salvador')">Dr. Salvador Zamorano Solis</button>
+        <form class="stack-form doctor-form" onsubmit="event.preventDefault(); saveConfigAndSync();">
+          <section class="control-panel">
+            <div class="panel-head">
+              <span class="panel-kicker">Perfil</span>
+              <h2 class="panel-title">Configuración del doctor</h2>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label for="cfg-doc-nombre">Nombre Completo del Doctor</label>
-            <input type="text" id="cfg-doc-nombre" placeholder="Ej. Dr. Salvador Zamorano Solis" oninput="saveConfigAndSync(false)">
-          </div>
+            <div class="config-group-box">
+              <div class="config-group-title">Cargar Doctor Predeterminado</div>
+              <div class="btn-group btn-group-tight">
+                <button type="button" class="btn btn-secondary btn-small btn-block" onclick="loadDefaultDoctorData('salvador')">Dr. Salvador Zamorano Solis</button>
+              </div>
+            </div>
 
-          <div class="form-group">
-            <label for="cfg-doc-especialidades">Especialidades</label>
-            <input type="text" id="cfg-doc-especialidades" placeholder="Ej. Traumatología y Ortopedia" oninput="saveConfigAndSync(false)">
-          </div>
-
-          <div class="form-row">
             <div class="form-group">
-              <label for="cfg-doc-cedula">Cédula Profesional</label>
-              <input type="text" id="cfg-doc-cedula" placeholder="Ej. 1208630" oninput="saveConfigAndSync(false)">
+              <label for="cfg-doc-nombre">Nombre Completo del Doctor</label>
+              <input type="text" id="cfg-doc-nombre" placeholder="Ej. Dr. Salvador Zamorano Solis" oninput="saveConfigAndSync(false)">
             </div>
+
             <div class="form-group">
-              <label for="cfg-doc-ced-esp">Cédula de Especialidad</label>
-              <input type="text" id="cfg-doc-ced-esp" placeholder="Ej. 3271271" oninput="saveConfigAndSync(false)">
+              <label for="cfg-doc-especialidades">Especialidades</label>
+              <input type="text" id="cfg-doc-especialidades" placeholder="Ej. Traumatología y Ortopedia" oninput="saveConfigAndSync(false)">
             </div>
-          </div>
 
-          <div class="form-group">
-            <label for="cfg-doc-tel">Teléfonos de Contacto</label>
-            <input type="text" id="cfg-doc-tel" placeholder="Ej. Tel. 981 811 9408 | Cel. 981 819 3972" oninput="saveConfigAndSync(false)">
-          </div>
-
-          <div class="form-group">
-            <label for="cfg-doc-direccion">Dirección del Consultorio</label>
-            <textarea id="cfg-doc-direccion" placeholder="Calle, Número, Colonia, C.P., Consultorio..." oninput="saveConfigAndSync(false)"></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-block">Guardar Datos de Doctor</button>
-
-          <div class="config-group-box" style="margin-top:24px;">
-            <div class="config-group-title">Respaldar Historial de Recetas</div>
-            <div class="btn-group" style="margin-top:0;">
-              <button type="button" class="btn btn-secondary btn-small btn-block" onclick="exportarBackupJSON()">Exportar Respaldo</button>
-              <button type="button" class="btn btn-secondary btn-small btn-block" onclick="document.getElementById('import-file-selector').click()">Importar Respaldo</button>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cfg-doc-cedula">Cédula Profesional</label>
+                <input type="text" id="cfg-doc-cedula" placeholder="Ej. 1208630" oninput="saveConfigAndSync(false)">
+              </div>
+              <div class="form-group">
+                <label for="cfg-doc-ced-esp">Cédula de Especialidad</label>
+                <input type="text" id="cfg-doc-ced-esp" placeholder="Ej. 3271271" oninput="saveConfigAndSync(false)">
+              </div>
             </div>
-            <input type="file" id="import-file-selector" style="display:none;" accept=".json" onchange="importarBackupJSON(event)">
-          </div>
 
-          <div class="config-group-box" style="margin-top:20px; background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.25);">
-            <div class="config-group-title" style="color: var(--ui-success); margin-bottom: 8px;">💾 Base de Datos Local</div>
-            <p style="font-size: 11.5px; color: var(--ui-text-muted); line-height: 1.45; margin-bottom: 8px;">
-              Toda la información de tus pacientes y recetas se guarda automáticamente **en el disco duro de esta laptop** (en la memoria persistente del navegador). Funciona 100% offline, sin necesidad de internet.
-            </p>
-            <p style="font-size: 11.5px; color: var(--ui-text-muted); line-height: 1.45;">
-              Usa el botón "Exportar Respaldo" para descargar un archivo físico de copia de seguridad en tu computadora.
-            </p>
-          </div>
+            <div class="form-group">
+              <label for="cfg-doc-tel">Teléfonos de Contacto</label>
+              <input type="text" id="cfg-doc-tel" placeholder="Ej. Tel. 981 811 9408 | Cel. 981 819 3972" oninput="saveConfigAndSync(false)">
+            </div>
 
+            <div class="form-group">
+              <label for="cfg-doc-direccion">Dirección del Consultorio</label>
+              <textarea id="cfg-doc-direccion" placeholder="Calle, Número, Colonia, C.P., Consultorio..." oninput="saveConfigAndSync(false)"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Guardar Datos de Doctor</button>
+          </section>
+
+          <section class="control-panel">
+            <div class="panel-head">
+              <span class="panel-kicker">Respaldo</span>
+              <h2 class="panel-title">Base local y seguridad</h2>
+            </div>
+
+            <div class="config-group-box">
+              <div class="config-group-title">Respaldar Historial de Recetas</div>
+              <div class="btn-group btn-group-tight">
+                <button type="button" class="btn btn-secondary btn-small btn-block" onclick="exportarBackupJSON()">Exportar Respaldo</button>
+                <button type="button" class="btn btn-secondary btn-small btn-block" onclick="document.getElementById('import-file-selector').click()">Importar Respaldo</button>
+              </div>
+              <input type="file" id="import-file-selector" style="display:none;" accept=".json" onchange="importarBackupJSON(event)">
+            </div>
+
+            <div class="config-group-box config-group-box-success">
+              <div class="config-group-title config-group-title-success">Base de Datos Local</div>
+              <p class="config-info-text">
+                Toda la información de tus pacientes y recetas se guarda automáticamente en esta laptop. Funciona 100% offline, sin necesidad de internet.
+              </p>
+              <p class="config-info-text">
+                Usa el botón "Exportar Respaldo" para descargar un archivo físico de copia de seguridad en tu computadora.
+              </p>
+            </div>
+          </section>
         </form>
       </div>
 
@@ -258,16 +313,17 @@
     <section class="preview-viewport">
 
       <!-- Status Pill (Dinámico y alineado) -->
-      <div class="zoom-pill" id="preview-toolbar-status" style="right: auto; left: 20px; font-size: 11px; font-weight: 700; color: var(--ui-text-muted);">
-        Vista Previa: 2 Media Carta apiladas en hoja Carta
-      </div>
-      
-      <!-- Zoom Pills -->
-      <div class="zoom-pill">
-        <button class="zoom-btn" onclick="adjustZoomSlider(-0.1)">-</button>
-        <input type="range" id="zoom-slider-ctrl" class="zoom-slider" min="0.4" max="1.5" step="0.05" value="0.8" oninput="updateCanvasZoom(parseFloat(this.value))">
-        <button class="zoom-btn" onclick="adjustZoomSlider(0.1)">+</button>
-        <span class="zoom-label" id="zoom-slider-percent">80%</span>
+      <div class="preview-toolbar">
+        <div class="zoom-pill zoom-pill-status" id="preview-toolbar-status">
+          Vista Previa: 2 Media Carta apiladas en hoja Carta
+        </div>
+        
+        <div class="zoom-pill">
+          <button class="zoom-btn" onclick="adjustZoomSlider(-0.1)">-</button>
+          <input type="range" id="zoom-slider-ctrl" class="zoom-slider" min="0.4" max="1.5" step="0.05" value="1.5" oninput="updateCanvasZoom(parseFloat(this.value))">
+          <button class="zoom-btn" onclick="adjustZoomSlider(0.1)">+</button>
+          <span class="zoom-label" id="zoom-slider-percent">150%</span>
+        </div>
       </div>
 
       <!-- Scaler -->
@@ -308,7 +364,7 @@
       <div id="modal-details-body">
         <!-- Rellenado dinámicamente -->
       </div>
-      <div class="btn-group" style="margin-top: 20px; justify-content: flex-end;">
+      <div class="btn-group btn-group-end modal-actions">
         <button class="btn btn-secondary" onclick="closeDetailModal()">Cerrar</button>
         <button class="btn btn-primary" id="modal-btn-edit">Editar</button>
         <button class="btn btn-success" id="modal-btn-print">Imprimir</button>

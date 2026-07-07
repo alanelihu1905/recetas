@@ -202,10 +202,10 @@ function getTemplateMeta(template = "diagnostico", noteMode = "indicaciones") {
         ? "Ej. Gonartrosis, lumbalgia mecánica, tendinitis del manguito rotador..."
         : "Ej. Dolor lumbar, reposo relativo y control en 7 días...",
       notePrintTitle: isDiagnosticMode ? "Diagnóstico" : "Indicaciones",
-      observationsLabel: isDiagnosticMode ? "Indicaciones (opcional)" : "Observaciones Adicionales",
+      observationsLabel: isDiagnosticMode ? "Indicaciones (opcional)" : "Observaciones",
       observationsPlaceholder: isDiagnosticMode
         ? "Ej. Reposo relativo, fisioterapia, control en 7 días..."
-        : "Indicaciones de reposo, fisioterapia, signos de alarma...",
+        : "Ej. Observaciones de reposo, fisioterapia, signos de alarma...",
       observationsPrintTitle: isDiagnosticMode ? "Indicaciones" : "Observaciones",
       medsLabel: "Medicamentos / Tratamiento",
       modeCopy: isDiagnosticMode
@@ -244,6 +244,8 @@ function updateFormModeUI() {
   const noteField = document.getElementById("form-diagnostico");
   const obsLabel = document.getElementById("form-observaciones-label");
   const obsField = document.getElementById("form-observaciones");
+  const noteGroup = noteField ? noteField.closest(".form-group") : null;
+  const obsGroup = obsField ? obsField.closest(".form-group") : null;
   const medsPanel = document.getElementById("meds-panel");
   const medsLabel = document.getElementById("form-meds-label");
   const addMedBtn = document.getElementById("btn-add-med-row");
@@ -268,6 +270,12 @@ function updateFormModeUI() {
   if (medsLabel) medsLabel.textContent = meta.medsLabel;
   if (medsPanel) medsPanel.classList.toggle("is-hidden", !isPrescription);
   if (noteModePanel) noteModePanel.classList.toggle("is-hidden", !isPrescription);
+  if (noteGroup) {
+    noteGroup.classList.toggle("is-hidden", isPrescription && meta.noteMode !== "diagnostico");
+  }
+  if (obsGroup) {
+    obsGroup.classList.toggle("is-hidden", false);
+  }
   if (addMedBtn) addMedBtn.disabled = !isPrescription;
 
   if (submitBtn) {
@@ -380,20 +388,25 @@ function applyContentDensity(recipeEl, payload) {
 
   const score = diagnostico.length + observaciones.length + medsWeight + (medsData.length * 80);
   const sparse = templateUsesMedications(template)
-    ? score < 140 && medsData.length <= 1
-    : score < 90;
+    ? score < 220 && medsData.length <= 2
+    : score < 150;
   const dense = templateUsesMedications(template)
-    ? score > 320 || medsData.length >= 4
-    : score > 220;
+    ? score > 430 || medsData.length >= 5
+    : score > 320;
   const compact = templateUsesMedications(template)
-    ? score > 520 || medsData.length >= 6
-    : score > 360;
+    ? score > 650 || medsData.length >= 7
+    : score > 500;
 
   recipeEl.querySelectorAll(".recipe").forEach(sheet => {
     sheet.classList.toggle("content-sparse", sparse);
     sheet.classList.toggle("content-dense", dense);
     sheet.classList.toggle("content-compact", compact);
   });
+}
+
+function getActivePrintMode() {
+  const field = document.getElementById("form-print-mode");
+  return field ? field.value : "solo";
 }
 
 function injectRecipeData(recipeEl, payload) {
@@ -673,7 +686,7 @@ function buildPrescriptionHTML(idSuffix, customTemplate = null) {
 
         <div class="header-right">
           <div class="specialty">${escapeHtml(doctorData.specialty)}</div>
-          <div class="credentials-caption">CEDULAS PROFESIONALES</div>
+          <div class="credentials-caption">CÉDULAS PROFESIONALES</div>
           <div class="credentials">
             <div class="credential-row">
               <span class="credential-main">${doctorData.cedula.label} <span class="val-doc-ced">${escapeHtml(doctorData.cedula.number)}</span></span>
@@ -714,7 +727,9 @@ function buildPrescriptionHTML(idSuffix, customTemplate = null) {
       <div class="body-section">
         <div class="body-content-area">
           <div class="body-grid">
-            <div class="rx-symbol">Rx</div>
+            <div class="rx-symbol" aria-hidden="true">
+              <img src="icon-rx.png" class="rx-symbol-img" alt="" onerror="this.parentElement.textContent='Rx';">
+            </div>
             <div class="body-copy">
               <div class="body-title"></div>
               <div class="diagnosis-label">Notas clínicas</div>
@@ -740,7 +755,7 @@ function buildPrescriptionHTML(idSuffix, customTemplate = null) {
               <img src="icon-phone.png" class="contact-icon-img" alt="">
             </div>
             <div class="contact-copy">
-              <div class="contact-label">TELEFONO CONSULTORIO</div>
+              <div class="contact-label">TELÉFONO CONSULTORIO</div>
               <span class="contact-value val-doc-tel">${escapeHtml(doctorData.consultorioTel)}</span>
             </div>
           </div>
@@ -749,7 +764,7 @@ function buildPrescriptionHTML(idSuffix, customTemplate = null) {
               <img src="icon-location.png" class="contact-icon-img" alt="">
             </div>
             <div class="contact-copy">
-              <div class="contact-label">UBICACION</div>
+              <div class="contact-label">UBICACIÓN</div>
               <div class="address-text">
                 <div class="contact-value val-doc-dir-primary">${escapeHtml(doctorData.dirPrimary)}</div>
                 <div class="contact-subvalue val-doc-dir-secondary">${escapeHtml(doctorData.dirSecondary)}</div>
@@ -784,9 +799,18 @@ function changePrintLayout() {
   pvTwoUp.style.display = "none";
 
   if (layout === "half") {
-    pvHalf.innerHTML = `<div class="sheet half-letter">${buildPrescriptionHTML("half")}</div>`;
+    pvHalf.innerHTML = `
+      <div class="two-up-wrapper half-sheet-wrapper">
+        <div class="page-letter">
+          <div class="slot top" id="pv-half-slot-top">
+            ${buildPrescriptionHTML("half-top")}
+          </div>
+          <div class="slot bottom slot-blank"></div>
+        </div>
+      </div>
+    `;
     pvHalf.style.display = "block";
-    toolbarStatus.textContent = "Vista Previa: Media Carta Horizontal (8.5\" x 5.5\")";
+    toolbarStatus.textContent = "Vista Previa: Media Carta superior con mitad inferior en blanco";
   } else if (layout === "full") {
     pvFull.innerHTML = `<div class="sheet full-letter">${buildPrescriptionHTML("full")}</div>`;
     pvFull.querySelector(".recipe").classList.add("layout-full");
@@ -816,6 +840,7 @@ function syncPreview() {
   const template = document.getElementById("form-template").value;
   const noteMode = getActiveNoteMode();
   const layout = document.getElementById("form-print-layout").value;
+  const printMode = getActivePrintMode();
   const doctorData = getDoctorPrintData();
 
   const medsData = templateUsesMedications(template) ? collectMedicationRows() : [];
@@ -834,9 +859,14 @@ function syncPreview() {
     const activeContainer = (layout === "half") ? document.getElementById("pv-half") : document.getElementById("pv-full");
     if (activeContainer) {
       rebuildPreviewRecipeIfNeeded(activeContainer, template, layout);
-      injectRecipeData(activeContainer, { template, noteMode, paciente, edad, sexo, fecha, diagnostico, observaciones, medsData, doctorData });
+      const target = layout === "half"
+        ? activeContainer.querySelector("#pv-half-slot-top")
+        : activeContainer;
+      injectRecipeData(target, { template, noteMode, paciente, edad, sexo, fecha, diagnostico, observaciones, medsData, doctorData });
     }
   }
+
+  document.body.dataset.printMode = printMode;
 
   // Guardar en caliente borrador actual
   guardarBorradorActual();
@@ -847,7 +877,16 @@ function rebuildPreviewRecipeIfNeeded(container, requiredTemplate, suffix) {
   const requiredClass = `template-${requiredTemplate}`;
   if (!currentRecipe || !currentRecipe.classList.contains(requiredClass)) {
     if (suffix === "half") {
-      container.innerHTML = `<div class="sheet half-letter">${buildPrescriptionHTML(suffix, requiredTemplate)}</div>`;
+      container.innerHTML = `
+        <div class="two-up-wrapper half-sheet-wrapper">
+          <div class="page-letter">
+            <div class="slot top" id="pv-half-slot-top">
+              ${buildPrescriptionHTML("half-top", requiredTemplate)}
+            </div>
+            <div class="slot bottom slot-blank"></div>
+          </div>
+        </div>
+      `;
     } else if (suffix === "full") {
       container.innerHTML = `<div class="sheet full-letter">${buildPrescriptionHTML(suffix, requiredTemplate)}</div>`;
       container.querySelector(".recipe").classList.add("layout-full");
@@ -875,7 +914,7 @@ function applyResponsiveDefaultZoom() {
   const slider = document.getElementById("zoom-slider-ctrl");
   if (!slider) return;
 
-  let target = 0.8;
+  let target = 1.5;
   if (window.innerWidth <= 640) {
     target = 0.45;
   } else if (window.innerWidth <= 900) {
@@ -916,6 +955,7 @@ function guardarBorradorActual() {
     template,
     noteMode: normalizeNoteMode(template, document.getElementById("form-note-mode").value),
     printLayout: document.getElementById("form-print-layout").value,
+    printMode: getActivePrintMode(),
     medicamentos,
     activeEditId
   };
@@ -935,7 +975,8 @@ function cargarBorradorActual() {
       document.getElementById("form-observaciones").value = r.observaciones || "";
       document.getElementById("form-template").value = r.template || "diagnostico";
       document.getElementById("form-note-mode").value = normalizeNoteMode(r.template || "diagnostico", r.noteMode || "indicaciones");
-      document.getElementById("form-print-layout").value = r.printLayout || "two";
+      document.getElementById("form-print-layout").value = r.printLayout || "half";
+      document.getElementById("form-print-mode").value = r.printMode || "solo";
       activeEditId = r.activeEditId || null;
 
       const container = document.getElementById("meds-rows-list");
@@ -974,6 +1015,7 @@ function guardarRecetaDesdeForm(showAlert = true) {
   const noteMode = normalizeNoteMode(template, document.getElementById("form-note-mode").value);
   const templateMeta = getTemplateMeta(template, noteMode);
   const printLayout = document.getElementById("form-print-layout").value;
+  const printMode = getActivePrintMode();
 
   if (!paciente) {
     showToast("Por favor, introduce el nombre del paciente antes de guardar o imprimir.", "warning");
@@ -989,7 +1031,7 @@ function guardarRecetaDesdeForm(showAlert = true) {
     if (index !== -1) {
       recetasList[index] = {
         id: activeEditId,
-        paciente, edad, sexo, fecha, diagnostico, observaciones, template, noteMode, printLayout, medicamentos,
+        paciente, edad, sexo, fecha, diagnostico, observaciones, template, noteMode, printLayout, printMode, medicamentos,
         updatedAt: new Date().toISOString()
       };
       recetaGuardada = recetasList[index];
@@ -1003,7 +1045,7 @@ function guardarRecetaDesdeForm(showAlert = true) {
   } else {
     const nuevaReceta = {
       id: Date.now().toString(),
-      paciente, edad, sexo, fecha, diagnostico, observaciones, template, noteMode, printLayout, medicamentos,
+      paciente, edad, sexo, fecha, diagnostico, observaciones, template, noteMode, printLayout, printMode, medicamentos,
       createdAt: new Date().toISOString()
     };
     recetasList.unshift(nuevaReceta);
@@ -1031,7 +1073,8 @@ function limpiarFormulario() {
   document.getElementById("form-observaciones").value = "";
   document.getElementById("form-template").value = "diagnostico";
   document.getElementById("form-note-mode").value = "indicaciones";
-  document.getElementById("form-print-layout").value = "two";
+  document.getElementById("form-print-layout").value = "half";
+  document.getElementById("form-print-mode").value = "solo";
 
   document.getElementById("meds-rows-list").innerHTML = "";
   addMedRow();
@@ -1245,6 +1288,7 @@ function editarReceta(id) {
   document.getElementById("form-template").value = r.template;
   document.getElementById("form-note-mode").value = normalizeNoteMode(r.template, r.noteMode);
   document.getElementById("form-print-layout").value = r.printLayout;
+  document.getElementById("form-print-mode").value = r.printMode || "solo";
 
   const container = document.getElementById("meds-rows-list");
   container.innerHTML = "";
@@ -1280,6 +1324,7 @@ function duplicarReceta(id) {
   document.getElementById("form-observaciones").value = r.observaciones;
   document.getElementById("form-template").value = r.template;
   document.getElementById("form-note-mode").value = normalizeNoteMode(r.template, r.noteMode);
+  document.getElementById("form-print-mode").value = r.printMode || "solo";
   document.getElementById("form-print-layout").value = r.printLayout;
 
   const container = document.getElementById("meds-rows-list");
@@ -1430,15 +1475,22 @@ function imprimirDesdeObjeto(recetaObj) {
   const printCanvas = document.getElementById("print-canvas");
   const printStyle = document.getElementById("dynamic-print-style");
 
-  const layout = recetaObj.printLayout;
+  const requestedLayout = recetaObj.printLayout;
+  const printMode = recetaObj.printMode || "solo";
+  const layout = printMode === "solo" ? "half" : requestedLayout;
   const template = recetaObj.template;
 
   if (layout === "half") {
-    printStyle.innerHTML = "@page { size: 8.5in 5.5in; margin: 0; }";
-    document.body.className = "print-half";
+    printStyle.innerHTML = "@page { size: letter portrait; margin: 0; }";
+    document.body.className = printMode === "solo" ? "print-solo" : "print-half";
     printCanvas.innerHTML = `
-      <div class="sheet half-letter">
-        ${buildPrescriptionHTML("print", template)}
+      <div class="two-up-wrapper half-sheet-wrapper">
+        <div class="page-letter">
+          <div class="slot top" id="print-slot-top">
+            ${buildPrescriptionHTML("print-top", template)}
+          </div>
+          <div class="slot bottom slot-blank"></div>
+        </div>
       </div>
     `;
   } else if (layout === "full") {
@@ -1497,7 +1549,10 @@ function imprimirDesdeObjeto(recetaObj) {
       doctorData
     });
   } else {
-    injectRecipeData(printCanvas, {
+    const target = layout === "half"
+      ? document.getElementById("print-slot-top")
+      : printCanvas;
+    injectRecipeData(target, {
       template,
       noteMode: recetaObj.noteMode || "indicaciones",
       paciente: recetaObj.paciente || "",
