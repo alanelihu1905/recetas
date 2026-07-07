@@ -844,9 +844,11 @@ textarea {
 .recipe {
   width: 8.5in;
   height: 5.5in;
-  padding: 0.34in 0.42in 0;
+  padding: 0.28in 0.42in 0;
   box-sizing: border-box;
   position: relative;
+  overflow: hidden;
+  isolation: isolate;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -869,16 +871,16 @@ textarea {
 
 .header-left {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 18px;
   min-width: 0;
   flex: 1 1 auto;
 }
 
 .doctor-logo {
-  width: 0.74in;
-  height: 0.74in;
-  min-width: 0.74in;
+  width: 0.82in;
+  height: 0.82in;
+  min-width: 0.82in;
   border-radius: 50%;
   overflow: hidden;
   display: flex;
@@ -897,8 +899,9 @@ textarea {
 .doctor-title {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   min-width: 0;
-  padding-top: 1px;
+  padding-top: 0;
 }
 
 .doctor-name,
@@ -911,9 +914,9 @@ textarea {
 }
 
 .doctor-name {
-  font-size: 28px;
+  font-size: 31px;
   font-weight: 800;
-  color: #121d3d;
+  color: #000000;
   line-height: 1.05;
   letter-spacing: -0.8px;
 }
@@ -933,7 +936,7 @@ textarea {
 .specialty {
   font-size: 14px;
   font-weight: 700;
-  color: #121d3d;
+  color: #000000;
   line-height: 1.15;
   letter-spacing: -0.1px;
 }
@@ -941,7 +944,7 @@ textarea {
 .credentials-caption {
   font-size: 8px;
   font-weight: 700;
-  color: #8b95a5;
+  color: #555555;
   letter-spacing: 1.1px;
   text-transform: uppercase;
   margin-top: 10px;
@@ -965,7 +968,7 @@ textarea {
 .credential-inst {
   font-size: 10px;
   font-weight: 600;
-  color: #334155;
+  color: #111111;
 }
 
 .credential-inst {
@@ -975,20 +978,17 @@ textarea {
 
 .header-rule {
   position: relative;
-  margin: 0.24in 0 0.24in;
+  margin: 0.16in 0 0.14in;
 }
 
 .header-rule-main {
   width: 100%;
   height: 2px;
-  background: #121d3d;
+  background: #000000;
 }
 
 .header-rule-accent {
-  width: 1.8in;
-  height: 1px;
-  background: #c2cad6;
-  margin-top: 10px;
+  display: none;
 }
 
 .info-row {
@@ -996,7 +996,7 @@ textarea {
   grid-template-columns: minmax(0, 1fr) 0.78in 0.72in 1.15in;
   gap: 0.18in;
   align-items: end;
-  margin-bottom: 0.18in;
+  margin-bottom: 0.14in;
 }
 
 .line-field {
@@ -1017,17 +1017,17 @@ textarea {
 .line-field strong {
   font-size: 10px;
   font-weight: 600;
-  color: #58657a;
+  color: #222222;
   white-space: nowrap;
 }
 
 .line-field .line-value {
   flex: 1;
-  border-bottom: 1px solid #b7c2d1;
+  border-bottom: 1px solid #555555;
   padding-bottom: 4px;
   font-size: 12.5px;
   font-weight: 600;
-  color: #24324d;
+  color: #000000;
   min-height: 17px;
   white-space: nowrap;
   overflow: hidden;
@@ -1039,7 +1039,8 @@ textarea {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  margin-bottom: 0.22in;
+  margin-bottom: 0.14in;
+  isolation: isolate;
 }
 
 .body-content-area {
@@ -1047,13 +1048,13 @@ textarea {
   position: relative;
   overflow: hidden;
   padding: 0.04in 0 0.04in;
-  color: #121d3d;
+  color: #000000;
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0,
     transparent 47px,
-    #e6edf5 47px,
-    #e6edf5 48px
+    #e2e2e2 47px,
+    #e2e2e2 48px
   );
   background-position: 0.96in 52px;
   background-size: calc(100% - 1.02in) 48px;
@@ -1061,7 +1062,7 @@ textarea {
 
 .body-grid {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   grid-template-columns: 0.72in minmax(0, 1fr);
   gap: 0.16in;
@@ -1073,7 +1074,7 @@ textarea {
   font-size: 54px;
   font-weight: 600;
   font-style: italic;
-  color: #121d3d;
+  color: #000000;
   line-height: 1;
   margin-top: 0.18in;
   letter-spacing: -1px;
@@ -1092,7 +1093,7 @@ textarea {
   display: none;
   font-size: 26px;
   font-weight: 700;
-  color: #121d3d;
+  color: #000000;
   line-height: 1.05;
   margin-bottom: 0.16in;
 }
@@ -1104,7 +1105,7 @@ textarea {
 .print-section-label {
   font-size: 8px;
   font-weight: 800;
-  color: #7c8798;
+  color: #555555;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 4px;
@@ -1119,14 +1120,14 @@ textarea {
   font-size: 12.8px;
   font-weight: 500;
   white-space: pre-wrap;
-  color: #24324d;
+  color: #000000;
   line-height: 1.66;
 }
 
 .rx-request-text {
   font-size: 13.2px;
   font-weight: 500;
-  color: #24324d;
+  color: #000000;
   line-height: 1.76;
   white-space: pre-wrap;
   padding-top: 2px;
@@ -1155,19 +1156,19 @@ textarea {
 .med-print-idx {
   font-weight: 600;
   font-size: 12.5px;
-  color: #6a788d;
+  color: #444444;
   min-width: 16px;
 }
 
 .med-print-name {
   font-weight: 700;
   font-size: 13.8px;
-  color: #121d3d;
+  color: #000000;
 }
 
 .med-print-details {
   font-size: 11.4px;
-  color: #708096;
+  color: #333333;
   font-weight: 600;
   font-family: var(--print-serif-font) !important;
   font-style: italic;
@@ -1176,7 +1177,7 @@ textarea {
 .med-print-instructions {
   font-size: 11px;
   font-weight: 500;
-  color: #708096;
+  color: #333333;
   padding-left: 24px;
   margin-top: 1px;
 }
@@ -1184,13 +1185,13 @@ textarea {
 .observations-print-section {
   margin-top: 16px;
   padding-top: 10px;
-  border-top: 1px solid #e5ebf3;
+  border-top: 1px solid #d0d0d0;
 }
 
 .observations-print-title {
   font-size: 8px;
   font-weight: 700;
-  color: #8c97a6;
+  color: #555555;
   text-transform: uppercase;
   margin-bottom: 4px;
   letter-spacing: 1px;
@@ -1199,7 +1200,7 @@ textarea {
 .observations-print-text {
   font-size: 11.6px;
   font-weight: 500;
-  color: #47566a;
+  color: #222222;
   line-height: 1.62;
 }
 
@@ -1207,9 +1208,9 @@ textarea {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  padding: 0 0 0.12in;
+  padding: 0 0 0.08in;
   margin-top: -0.02in;
-  margin-bottom: 0.08in;
+  margin-bottom: 0.03in;
   position: relative;
   z-index: 2;
 }
@@ -1221,7 +1222,7 @@ textarea {
 
 .signature-line {
   width: 100%;
-  border-top: 1px solid #94a3b8;
+  border-top: 1px solid #444444;
   margin-bottom: 5px;
 }
 
@@ -1229,7 +1230,7 @@ textarea {
   font-family: var(--print-display-font) !important;
   font-size: 8px;
   font-weight: 700;
-  color: #7c8798;
+  color: #555555;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -1237,7 +1238,7 @@ textarea {
 .extra-date-line {
   font-size: 10px;
   font-weight: 600;
-  color: #65748a;
+  color: #444444;
   margin-top: auto;
   padding-top: 14px;
   text-align: left;
@@ -1245,24 +1246,44 @@ textarea {
 
 .watermark-container {
   position: absolute;
-  right: -0.28in;
-  bottom: 0.9in;
-  width: 2.15in;
-  height: 2.15in;
+  right: -0.22in;
+  top: 50%;
+  width: 2.85in;
+  height: 2.85in;
+  transform: translateY(-50%);
   z-index: 0;
   pointer-events: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 1;
+}
+
+.watermark-container::before {
+  display: none;
 }
 
 .watermark-img {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  opacity: 0.022;
-  filter: grayscale(100%);
+  opacity: 0.14;
+  filter: grayscale(100%) contrast(1.02);
+  mix-blend-mode: normal;
+  image-rendering: auto;
+}
+
+.header,
+.header-rule,
+.info-row,
+.body-section,
+.signature-strip,
+.footer-dark-bar {
+  position: relative;
+  z-index: 1;
 }
 
 .footer-dark-bar {
@@ -1272,49 +1293,83 @@ textarea {
 
 .dark-bar {
   background-color: transparent;
-  color: #475569;
-  padding: 0.12in 0;
+  color: #222222;
+  padding: 0.145in 0 0.135in;
   display: grid;
-  grid-template-columns: 1fr 1.22fr 1fr;
-  gap: 0.18in;
-  align-items: center;
+  grid-template-columns: 0.96fr 1.3fr 0.96fr;
+  gap: 0.12in;
+  align-items: stretch;
   min-height: 0;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #d0d0d0;
 }
 
 .dark-bar-item {
+  display: grid;
+  grid-template-columns: 0.3in minmax(0, 1fr);
+  gap: 0.08in;
+  align-items: center;
+  min-width: 0;
+}
+
+.dark-bar-item.item-address {
+  padding: 0 0.1in;
+  border-left: 1px solid #d0d0d0;
+  border-right: 1px solid #d0d0d0;
+  grid-template-columns: 0.32in minmax(0, 1fr);
+}
+
+.contact-icon-wrap {
+  width: 0.24in;
+  height: 0.24in;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 1;
+  filter: grayscale(100%) brightness(0);
+}
+
+.contact-copy {
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 0;
 }
 
-.dark-bar-item.item-address {
-  padding: 0 0.12in;
-  border-left: 1px solid #e2e8f0;
-  border-right: 1px solid #e2e8f0;
-}
-
 .contact-label {
   font-size: 7px;
-  font-weight: 700;
-  color: #94a3b8;
-  letter-spacing: 1px;
+  font-weight: 800;
+  color: #555555;
+  letter-spacing: 1.05px;
   text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .contact-value {
-  font-size: 10.5px;
-  font-weight: 500;
-  color: #24324d;
-  line-height: 1.2;
+  font-size: 10.8px;
+  font-weight: 600;
+  color: #000000;
+  line-height: 1.18;
+}
+
+.dark-bar-item.item-address .contact-value {
+  font-size: 11.1px;
+  font-weight: 700;
+}
+
+.dark-bar-item.item-address .contact-subvalue {
+  color: #333333;
 }
 
 .contact-subvalue {
   font-size: 8.5px;
   font-weight: 500;
-  color: #5f7188;
+  color: #333333;
   line-height: 1.3;
   margin-top: 3px;
 }
@@ -1325,11 +1380,12 @@ textarea {
 }
 
 .recipe.template-diagnostico .body-content-area {
-  background-color: #ffffff;
-  border: 1px solid #e7edf4;
-  border-radius: 18px;
-  padding: 0.16in 0.18in 0.14in;
+  background-color: rgba(255, 255, 255, 0.86);
+  border: none;
+  border-radius: 0;
+  padding: 0.14in 0.18in 0.12in;
   background-image: none;
+  box-shadow: none;
 }
 
 .recipe.template-diagnostico .body-grid {
@@ -1337,7 +1393,54 @@ textarea {
 }
 
 .recipe.template-diagnostico .watermark-container {
+  --diagnostico-watermark-size: 5.35in;
+  top: 1.18in;
+  right: calc(var(--diagnostico-watermark-size) * -0.5);
+  width: var(--diagnostico-watermark-size);
+  height: var(--diagnostico-watermark-size);
+  transform: none;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.recipe.template-diagnostico .watermark-container::before {
   display: none;
+}
+
+.recipe.template-diagnostico .watermark-img {
+  opacity: 0.18;
+  filter: grayscale(100%) contrast(1.04);
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+.recipe.content-sparse .notes-print-text,
+.recipe.content-sparse .rx-request-text {
+  font-size: 14.4px;
+  line-height: 1.82;
+}
+
+.recipe.content-sparse .med-print-list {
+  gap: 14px;
+  padding-top: 8px;
+}
+
+.recipe.content-sparse .med-print-name {
+  font-size: 15px;
+}
+
+.recipe.content-sparse .med-print-details {
+  font-size: 12.3px;
+}
+
+.recipe.content-sparse .med-print-instructions,
+.recipe.content-sparse .observations-print-text {
+  font-size: 11.8px;
+  line-height: 1.6;
+}
+
+.recipe.content-sparse .observations-print-section {
+  margin-top: 18px;
 }
 
 .recipe.template-diagnostico .body-copy,
@@ -1426,25 +1529,25 @@ textarea {
 .sheet.full-letter .recipe {
   width: 11in;
   height: 8.5in;
-  padding: 0.56in 0.62in 0;
+  padding: 0.44in 0.62in 0;
 }
 
-.sheet.full-letter .doctor-logo { width: 0.98in; height: 0.98in; min-width: 0.98in; }
-.sheet.full-letter .doctor-name { font-size: 52px; }
+.sheet.full-letter .doctor-logo { width: 1.08in; height: 1.08in; min-width: 1.08in; }
+.sheet.full-letter .doctor-name { font-size: 56px; }
 .sheet.full-letter .doctor-subtitle { display: none; }
 .sheet.full-letter .specialty { font-size: 25px; }
 .sheet.full-letter .credentials-caption { font-size: 11px; margin-top: 10px; margin-bottom: 8px; }
 .sheet.full-letter .credential-main,
 .sheet.full-letter .credential-inst { font-size: 15px; }
 
-.sheet.full-letter .header-rule { margin: 0.28in 0 0.28in; }
+.sheet.full-letter .header-rule { margin: 0.18in 0 0.16in; }
 .sheet.full-letter .header-rule-main { height: 3px; }
-.sheet.full-letter .header-rule-accent { width: 2.3in; height: 1px; margin-top: 12px; }
+.sheet.full-letter .header-rule-accent { display: none; }
 
 .sheet.full-letter .info-row {
   grid-template-columns: minmax(0, 1fr) 1.1in 0.9in 1.7in;
   gap: 0.24in;
-  margin-bottom: 0.26in;
+  margin-bottom: 0.18in;
 }
 
 .sheet.full-letter .line-field strong { font-size: 13px; }
@@ -1477,7 +1580,7 @@ textarea {
 }
 
 .sheet.full-letter .print-section-label { font-size: 10px; margin-bottom: 6px; }
-.sheet.full-letter .notes-print-text { font-size: 14px; line-height: 1.72; }
+.sheet.full-letter .notes-print-text { font-size: 14.6px; line-height: 1.76; }
 
 .sheet.full-letter .rx-request-text {
   font-size: 15.8px;
@@ -1494,29 +1597,77 @@ textarea {
 .sheet.full-letter .observations-print-title { font-size: 10px; margin-bottom: 5px; }
 .sheet.full-letter .observations-print-text { font-size: 13.6px; }
 .sheet.full-letter .extra-date-line { font-size: 12px; padding-top: 16px; }
-.sheet.full-letter .signature-strip { padding-bottom: 0.16in; margin-bottom: 0.12in; }
+.sheet.full-letter .signature-strip { padding-bottom: 0.1in; margin-bottom: 0.05in; }
 .sheet.full-letter .signature-block { width: 2.7in; }
 .sheet.full-letter .signature-label { font-size: 10px; }
 
-.sheet.full-letter .watermark-container { width: 3.15in; height: 3.15in; right: -0.35in; bottom: 1.45in; }
+.sheet.full-letter .watermark-container { width: 3.45in; height: 3.45in; right: -0.3in; }
+
+.sheet.full-letter .header-right {
+  min-width: 1.82in;
+}
+
+.sheet.full-letter .recipe.template-diagnostico .watermark-container {
+  --diagnostico-watermark-size: 6.6in;
+  top: 1.68in;
+  right: calc(var(--diagnostico-watermark-size) * -0.5);
+  width: var(--diagnostico-watermark-size);
+  height: var(--diagnostico-watermark-size);
+  transform: none;
+}
 
 .sheet.full-letter .recipe.template-diagnostico .body-content-area {
-  border-radius: 22px;
-  padding: 0.24in 0.26in 0.18in;
+  border-radius: 0;
+  padding: 0.18in 0.24in 0.14in;
 }
 
 .sheet.full-letter .recipe.template-diagnostico .body-grid {
   grid-template-columns: 1fr;
 }
 
-.sheet.full-letter .dark-bar {
-  min-height: 0;
-  padding: 0.16in 0;
-  gap: 0.28in;
+.sheet.full-letter .recipe.content-sparse .notes-print-text,
+.sheet.full-letter .recipe.content-sparse .rx-request-text {
+  font-size: 16.6px;
+  line-height: 1.9;
 }
 
-.sheet.full-letter .contact-label { font-size: 10px; margin-bottom: 6px; }
-.sheet.full-letter .contact-value { font-size: 14px; }
+.sheet.full-letter .recipe.content-sparse .med-print-name {
+  font-size: 18.8px;
+}
+
+.sheet.full-letter .recipe.content-sparse .med-print-details {
+  font-size: 15px;
+}
+
+.sheet.full-letter .recipe.content-sparse .med-print-instructions,
+.sheet.full-letter .recipe.content-sparse .observations-print-text {
+  font-size: 14.2px;
+  line-height: 1.65;
+}
+
+.sheet.full-letter .dark-bar {
+  min-height: 0;
+  padding: 0.175in 0 0.16in;
+  gap: 0.18in;
+}
+
+.sheet.full-letter .dark-bar-item {
+  grid-template-columns: 0.44in minmax(0, 1fr);
+  gap: 0.12in;
+}
+
+.sheet.full-letter .dark-bar-item.item-address {
+  grid-template-columns: 0.48in minmax(0, 1fr);
+}
+
+.sheet.full-letter .contact-icon-wrap {
+  width: 0.34in;
+  height: 0.34in;
+}
+
+.sheet.full-letter .contact-label { font-size: 10px; margin-bottom: 5px; }
+.sheet.full-letter .contact-value { font-size: 14.2px; }
+.sheet.full-letter .dark-bar-item.item-address .contact-value { font-size: 14.8px; }
 .sheet.full-letter .contact-subvalue { font-size: 12px; margin-top: 4px; }
 
 /* MODALES DE DETALLE */

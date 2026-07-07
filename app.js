@@ -52,7 +52,7 @@ const SVG_LOGO_BACKUP = `
 `;
 
 // 2. LOGO MARCA DE AGUA
-// El watermark utiliza la imagen local logo.jpg con transparencia y blending controlados por CSS.
+// El watermark utiliza una version ampliada del logo para conservar mejor definicion al imprimir.
 
 // 4. ICONOS REDONDOS (LLENOS) PARA LA BARRA NEGRA Rx
 const ICON_PHONE_CIRCLE = `
@@ -146,7 +146,7 @@ function getDoctorPrintData() {
   const rawCed = localStorage.getItem("cfg_med_ced") || "";
   const rawCedEsp = localStorage.getItem("cfg_med_cedesp") || "";
   const rawTel = localStorage.getItem("cfg_med_tel") || "";
-  const rawDir = localStorage.getItem("cfg_med_dir") || "";
+  const rawDir = normalizeDoctorAddress(localStorage.getItem("cfg_med_dir") || "");
 
   const telParts = rawTel.split("|").map(part => part.trim()).filter(Boolean);
   const consultorioTel = telParts[0] || rawTel.trim();
@@ -167,6 +167,10 @@ function getDoctorPrintData() {
     dirPrimary,
     dirSecondary
   };
+}
+
+function normalizeDoctorAddress(rawAddress = "") {
+  return String(rawAddress).replace(/Consultorio\s+214\b/i, "Consultorio 219");
 }
 
 function templateUsesMedications(template = "diagnostico") {
@@ -375,6 +379,9 @@ function applyContentDensity(recipeEl, payload) {
   }, 0);
 
   const score = diagnostico.length + observaciones.length + medsWeight + (medsData.length * 80);
+  const sparse = templateUsesMedications(template)
+    ? score < 140 && medsData.length <= 1
+    : score < 90;
   const dense = templateUsesMedications(template)
     ? score > 320 || medsData.length >= 4
     : score > 220;
@@ -383,6 +390,7 @@ function applyContentDensity(recipeEl, payload) {
     : score > 360;
 
   recipeEl.querySelectorAll(".recipe").forEach(sheet => {
+    sheet.classList.toggle("content-sparse", sparse);
     sheet.classList.toggle("content-dense", dense);
     sheet.classList.toggle("content-compact", compact);
   });
@@ -488,6 +496,7 @@ window.addEventListener("load", () => {
   if (!localStorage.getItem("cfg_med_name")) {
     loadDefaultDoctorData(defaultDoc, false);
   } else {
+    migrateDoctorDefaults();
     loadDoctorConfigFromStorage();
   }
 
@@ -536,7 +545,7 @@ function loadDefaultDoctorData(docType, showAlert = true) {
     document.getElementById("cfg-doc-cedula").value = "2336570 UADY";
     document.getElementById("cfg-doc-ced-esp").value = "3223396 UNAM";
     document.getElementById("cfg-doc-tel").value = "Tel. (981) 8139730 | Cel. (981) 8193972";
-    document.getElementById("cfg-doc-direccion").value = "Hospital Maria Costanza, Av. Lázaro Cárdenas 86, CP. 24097, Consultorio 214";
+    document.getElementById("cfg-doc-direccion").value = "Hospital Maria Costanza, Av. Lázaro Cárdenas 86, CP. 24097, Consultorio 219";
   }
 
   saveConfigAndSync(false);
@@ -552,7 +561,7 @@ function saveConfigAndSync(showAlert = true) {
   const cedula = document.getElementById("cfg-doc-cedula").value;
   const cedEsp = document.getElementById("cfg-doc-ced-esp").value;
   const tel = document.getElementById("cfg-doc-tel").value;
-  const direccion = document.getElementById("cfg-doc-direccion").value;
+  const direccion = normalizeDoctorAddress(document.getElementById("cfg-doc-direccion").value);
 
   localStorage.setItem("cfg_med_name", nombre);
   localStorage.setItem("cfg_med_spec", especialidad);
@@ -569,6 +578,16 @@ function saveConfigAndSync(showAlert = true) {
   }
 }
 
+function migrateDoctorDefaults() {
+  const savedAddress = localStorage.getItem("cfg_med_dir");
+  if (!savedAddress) return;
+
+  const normalizedAddress = normalizeDoctorAddress(savedAddress);
+  if (normalizedAddress !== savedAddress) {
+    localStorage.setItem("cfg_med_dir", normalizedAddress);
+  }
+}
+
 // LEER CONFIGURACIÓN DESDE STORAGE
 function loadDoctorConfigFromStorage() {
   document.getElementById("cfg-doc-nombre").value = localStorage.getItem("cfg_med_name") || "";
@@ -576,7 +595,7 @@ function loadDoctorConfigFromStorage() {
   document.getElementById("cfg-doc-cedula").value = localStorage.getItem("cfg_med_ced") || "";
   document.getElementById("cfg-doc-ced-esp").value = localStorage.getItem("cfg_med_cedesp") || "";
   document.getElementById("cfg-doc-tel").value = localStorage.getItem("cfg_med_tel") || "";
-  document.getElementById("cfg-doc-direccion").value = localStorage.getItem("cfg_med_dir") || "";
+  document.getElementById("cfg-doc-direccion").value = normalizeDoctorAddress(localStorage.getItem("cfg_med_dir") || "");
   
   document.getElementById("head-doc-title").textContent = localStorage.getItem("cfg_med_name") || "Dr. Salvador Zamorano Solis";
 }
@@ -638,7 +657,7 @@ function buildPrescriptionHTML(idSuffix, customTemplate = null) {
   return `
     <div class="recipe ${templateClass}" id="rec-sheet-${idSuffix}">
       <div class="watermark-container" aria-hidden="true">
-        <img src="logo-clean.png" class="watermark-img" alt="" onerror="this.src='logo.jpg'">
+        <img src="logo-watermark.png" class="watermark-img" alt="" onerror="this.onerror=null;this.src='logo-clean.png';">
       </div>
 
       <div class="header">
@@ -717,19 +736,34 @@ function buildPrescriptionHTML(idSuffix, customTemplate = null) {
       <div class="footer-dark-bar">
         <div class="dark-bar">
           <div class="dark-bar-item contact-block">
-            <div class="contact-label">TELEFONO CONSULTORIO</div>
-            <span class="contact-value val-doc-tel">${escapeHtml(doctorData.consultorioTel)}</span>
+            <div class="contact-icon-wrap" aria-hidden="true">
+              <img src="icon-phone.png" class="contact-icon-img" alt="">
+            </div>
+            <div class="contact-copy">
+              <div class="contact-label">TELEFONO CONSULTORIO</div>
+              <span class="contact-value val-doc-tel">${escapeHtml(doctorData.consultorioTel)}</span>
+            </div>
           </div>
           <div class="dark-bar-item item-address contact-block">
-            <div class="contact-label">UBICACION</div>
-            <div class="address-text">
-              <div class="contact-value val-doc-dir-primary">${escapeHtml(doctorData.dirPrimary)}</div>
-              <div class="contact-subvalue val-doc-dir-secondary">${escapeHtml(doctorData.dirSecondary)}</div>
+            <div class="contact-icon-wrap" aria-hidden="true">
+              <img src="icon-location.png" class="contact-icon-img" alt="">
+            </div>
+            <div class="contact-copy">
+              <div class="contact-label">UBICACION</div>
+              <div class="address-text">
+                <div class="contact-value val-doc-dir-primary">${escapeHtml(doctorData.dirPrimary)}</div>
+                <div class="contact-subvalue val-doc-dir-secondary">${escapeHtml(doctorData.dirSecondary)}</div>
+              </div>
             </div>
           </div>
           <div class="dark-bar-item contact-block">
-            <div class="contact-label">WHATSAPP</div>
-            <span class="contact-value val-doc-cel">${escapeHtml(doctorData.whatsappTel)}</span>
+            <div class="contact-icon-wrap" aria-hidden="true">
+              <img src="icon-whatsapp.png" class="contact-icon-img" alt="">
+            </div>
+            <div class="contact-copy">
+              <div class="contact-label">WHATSAPP</div>
+              <span class="contact-value val-doc-cel">${escapeHtml(doctorData.whatsappTel)}</span>
+            </div>
           </div>
         </div>
       </div>
